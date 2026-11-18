@@ -77,6 +77,22 @@
       <label class="field" for="speed">Reading speed (words per minute)</label><input id="speed" type="number" min="50" max="1000" value="200">
       <button id="readBtn">Estimate reading time</button><div class="result" id="readResult" aria-live="polite">Your estimate will appear here.</div>
     </article>
+        <article class="tool">
+      <h3>🎓 GPA Calculator</h3>
+      <p class="desc">Calculate your Grade Point Average from your course grades and credit hours.</p>
+      <div class="row">
+        <div>
+          <label class="field" for="gpaGrade">Grade points</label>
+          <input id="gpaGrade" type="number" min="0" max="4" step="0.01" placeholder="e.g. 3.5">
+        </div>
+        <div>
+          <label class="field" for="gpaCredits">Credit hours</label>
+          <input id="gpaCredits" type="number" min="0.01" step="any" placeholder="e.g. 3">
+        </div>
+      </div>
+      <button id="gpaBtn">Add course</button>
+      <div class="result" id="gpaResult" aria-live="polite">Your GPA will appear here.</div>
+    </article>
   </section>
 
   <section id="how">
@@ -105,7 +121,16 @@ $('upperBtn').onclick=()=>$('caseInput').value=$('caseInput').value.toUpperCase(
 $('lowerBtn').onclick=()=>$('caseInput').value=$('caseInput').value.toLowerCase();
 $('titleBtn').onclick=()=>$('caseInput').value=$('caseInput').value.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
 $('copyCase').onclick=async()=>{try{await navigator.clipboard.writeText($('caseInput').value);$('caseStatus').textContent='Copied to clipboard.';}catch(e){$('caseStatus').textContent='Select the text and copy it using your keyboard.';}};
-$('readBtn').onclick=()=>{const w=countText($('readText').value).words,s=Number($('speed').value);if(!w||s<=0){$('readResult').textContent='Enter some text and a valid reading speed.';return;}const mins=w/s;$('readResult').textContent=`About ${mins<1?Math.max(1,Math.ceil(mins*60))+' seconds':Math.ceil(mins)+' minute(s)'} for ${w} words at ${s} words per minute.`;};
+$('gpaBtn').onclick=()=>{
+  const grade=Number($('gpaGrade').value);
+  const credits=Number($('gpaCredits').value);
+  if($('gpaGrade').value===''||$('gpaCredits').value===''||grade<0||grade>4||credits<=0){
+    $('gpaResult').textContent='Enter a grade from 0 to 4 and valid credit hours.';
+    return;
+  }
+  $('gpaResult').textContent='Your GPA: '+grade.toFixed(2)+' / 4.00 ('+credits+' credit hours)';
+};
+  $('readBtn').onclick=()=>{const w=countText($('readText').value).words,s=Number($('speed').value);if(!w||s<=0){$('readResult').textContent='Enter some text and a valid reading speed.';return;}const mins=w/s;$('readResult').textContent=`About ${mins<1?Math.max(1,Math.ceil(mins*60))+' seconds':Math.ceil(mins)+' minute(s)'} for ${w} words at ${s} words per minute.`;};
 let remaining=1500,interval=null;
 function showTimer(){const m=Math.floor(remaining/60),s=remaining%60;$('timerDisplay').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
 function stopTimer(){if(interval){clearInterval(interval);interval=null;}}
