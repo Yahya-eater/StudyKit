@@ -147,8 +147,7 @@ $('gpaBtn').onclick=()=>{
   $('gpaCredits').value='';
 };
   
-  $('gpaResult').textContent='Your GPA: '+grade.toFixed(2)+' / 4.00 ('+credits+' credit hours)';
-};
+
   $('readBtn').onclick=()=>{const w=countText($('readText').value).words,s=Number($('speed').value);if(!w||s<=0){$('readResult').textContent='Enter some text and a valid reading speed.';return;}const mins=w/s;$('readResult').textContent=`About ${mins<1?Math.max(1,Math.ceil(mins*60))+' seconds':Math.ceil(mins)+' minute(s)'} for ${w} words at ${s} words per minute.`;};
 let remaining=1500,interval=null;
 function showTimer(){const m=Math.floor(remaining/60),s=remaining%60;$('timerDisplay').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
